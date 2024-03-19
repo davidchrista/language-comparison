@@ -4,13 +4,24 @@ void main(List<String> arguments) {
   print('hello ${dart.name()}');
 }
 
-// functions
+///// functions
 
 int add(int a, int b) {
   return a + b;
 }
 
-// pass by value or reference?
+// we can also use named parameters
+
+int plusmult(int a, int b, {int aMult = 1, int bMult = 1}) {
+  // named parameters must either have default or be "required"!
+  return a * aMult + b * bMult;
+}
+
+void f0() {
+  var x = plusmult(2, 4, aMult: 5);
+}
+
+///// pass by value or reference?
 
 // general rule: pass by "creating an additional name for a variable"
 // reassigning a name to something different, lets it point to a new
@@ -22,28 +33,29 @@ int add(int a, int b) {
 //   * objects act like "pass by reference", as long as not reassigned
 //   * reassignment causes the "reference" to be lost.
 
-// variables
+///// variables
 
 void f1() {
+  int z; // initial value: null !
   var x = 5;
   var y = 'string';
 }
 
-// lists
+///// lists
 
 void f2() {
   var a = [1, 2, 3];
   var b = <String>[];
 }
 
-// maps
+///// maps
 
 void f3() {
   var m = {1: '1', 2: '2'};
   Map<int, String> n;
 }
 
-// if
+///// if
 
 void f4() {
   var x = 1;
@@ -65,7 +77,7 @@ void f4() {
   }
 }
 
-// switch
+///// switch
 
 void f5() {
   var x = 1;
@@ -96,7 +108,7 @@ void f5() {
   }
 }
 
-// strings
+///// strings
 
 void f5_5() {
   var s = 'string';
@@ -105,7 +117,7 @@ void f5_5() {
   r = s[0];
 }
 
-// structs
+///// structs
 
 // no distinct structs, only classes
 
@@ -120,7 +132,7 @@ void f6() {
   Struct y;
 }
 
-// classes
+///// classes
 
 class Class {
   int a;
@@ -148,7 +160,7 @@ void f7() {
   var p = s.generate();
 }
 
-// function objects
+///// function objects
 
 int apply(int x, int Function(int) h) {
   return h(x);
@@ -162,4 +174,30 @@ void f8() {
   double = (a) => 2 * a;
   var x = apply(3, double);
   var y = apply(4, (i) => i * i);
+}
+
+///// const/final
+
+class ConstStruct {
+  final int a, b;
+  // all fields need to be final to enable const constructor
+  const ConstStruct(this.a, this.b);
+  // need to have const constructor to create const objects
+}
+
+void f9() {
+  var a = 3;
+
+  // const for compile time constants
+  const x = 5;
+  //const y = a; // error - a is not compile time constant
+  const s = 'string';
+  //const y = Struct(1, 'string'); // error - no const constructor
+  const y = ConstStruct(1, 2);
+
+  // final for run time constants
+  final c = a;
+  //c = 4; // error
+  final u = Struct(1, 'string');
+  u.a = 3; // final only forbids reassignment
 }

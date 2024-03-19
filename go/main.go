@@ -8,13 +8,15 @@ func main() {
 	fmt.Println("hello go")
 }
 
-// functions
+///// functions
 
 func add(a int, b int) int {
 	return a + b
 }
 
-// pass by value or reference?
+// there are no named parameters!
+
+///// pass by value or reference?
 
 // general rule: pass by value
 // special cases:
@@ -22,7 +24,7 @@ func add(a int, b int) int {
 //   * maps (again, "reference" to underlying data structure)
 //   * channels
 
-// variables
+///// variables
 
 func f1() {
 	var x = 5
@@ -31,21 +33,21 @@ func f1() {
 	z := 7 // short
 }
 
-// lists
+///// lists
 
 func f2() {
 	a := []int{1, 2, 3}
 	b := []string{}
 }
 
-// maps
+///// maps
 
 func f3() {
 	m := map[int]string{1: "1", 2: "2"}
 	n := map[int]string{}
 }
 
-// if
+///// if
 
 func f4() {
 	x := 1
@@ -64,7 +66,7 @@ func f4() {
 	}
 }
 
-// switch
+///// switch
 
 func f5() {
 	var y int
@@ -92,7 +94,7 @@ func f5() {
 	}
 }
 
-// strings
+///// strings
 
 func f5_5() {
 	s := "string"
@@ -100,7 +102,7 @@ func f5_5() {
 	r = rune(s[0])
 }
 
-// structs
+///// structs
 
 type Struct struct {
 	a int
@@ -112,7 +114,7 @@ func f6() {
 	var y Struct
 }
 
-// classes
+///// classes
 
 // by defining methods on structs
 
@@ -142,7 +144,7 @@ func f7() {
 	p := s.generate() // testtesttest
 }
 
-// function objects
+///// function objects
 
 func apply(x int, h func(int) int) int {
 	return h(x)
@@ -154,4 +156,13 @@ func f8() {
 	}
 	x := apply(3, double) // 6
 	y := apply(4, func(i int) int { return i * i }) // 16
+}
+
+///// const/final
+
+func f9() {
+  const a = 100 // numeric constant can act as int a.w.a. float
+  //a = 500 // error
+  //const s = Struct{1, "a"}; // error - only primitives can be const
+  //const x := 100 // error - ":=" not allowed for const
 }

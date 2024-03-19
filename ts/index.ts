@@ -1,12 +1,14 @@
 console.log("hello ts");
 
-// functions
+///// functions
 
 function add(a: number, b: number): number {
   return a + b;
 }
 
-// pass by value or reference?
+// there are no named parameters!
+
+///// pass by value or reference?
 
 // general rule: pass by "creating an additional name for a variable"
 // reassigning a name to something different, lets it point to a new
@@ -18,28 +20,28 @@ function add(a: number, b: number): number {
 //   * objects act like "pass by reference", as long as not reassigned
 //   * reassignment causes the "reference" to be lost.
 
-// variables
+///// variables
 
 function f1() {
   let x = 5;
   let y = "string";
 }
 
-// lists
+///// lists
 
 function f2() {
   const a = [1, 2, 3];
   const b: string[] = [];
 }
 
-// maps
+///// maps
 
 function f3() {
   const m = { 1: "1", 2: "2" };
   const n: { [key: number]: string } = {};
 }
 
-// if
+///// if
 
 function f4() {
   let x = 1;
@@ -53,7 +55,7 @@ function f4() {
   }
 }
 
-// switch
+///// switch
 
 function f5() {
   let x = 1;
@@ -83,7 +85,7 @@ function f5() {
   }
 }
 
-// strings
+///// strings
 
 function f5_5() {
   let s = '"string"';
@@ -91,7 +93,7 @@ function f5_5() {
   let r = s[0]; // no runes/characters
 }
 
-// structs
+///// structs
 
 // in JS/TS objects come first, so structs are just
 // interfaces/types for objects
@@ -113,7 +115,7 @@ function f6() {
   let w: Struct2;
 }
 
-// classes
+///// classes
 
 class Class {
   a: number;
@@ -137,13 +139,18 @@ class Class {
   }
 }
 
+class Klass {
+  // constructor shorthand: defines members a and s
+  constructor(public a: number, public s: string) {}
+}
+
 function f7() {
   let s = new Class(2, "test"); // "new" required!
   s.incr();
   let p = s.generate();
 }
 
-// function objects
+///// function objects
 
 function apply(x: number, h: (a: number) => number) {
   return h(x);
@@ -157,4 +164,27 @@ function f8() {
   double = (a: number) => 2 * a;
   var x = apply(3, double);
   var y = apply(4, (i) => i * i);
+}
+
+///// const/final
+
+class C {
+  // const class member: readonly
+  readonly a: number;
+  constructor(num: number) {
+    this.a = num;
+  }
+}
+
+function f9() {
+  let a = 3;
+
+  const x = 5;
+  const y = a;
+  const s = 'string';
+  //x = 6; // error
+
+  const c = {a: 2, s: 'string'};
+  c.a = 3;
+  // JS/TS const, like Dart final, only forbids reassignment
 }
