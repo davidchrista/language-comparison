@@ -106,6 +106,37 @@ void f5() {
     default:
       y = 0;
   }
+
+  // NO empty switch as alternative to if-else chain!
+}
+
+///// loops
+
+void f5_0_5() {
+  // basic loop
+  var s = "";
+  for (var i = 0; i < 10; i++) {
+    s += "a";
+  }
+  var j = 0;
+  while (j++ < 10) {
+    s += "b";
+  }
+  while (true) {
+    break;
+  }
+
+  // "for in"
+  var a = [1, 2, 3, 4, 5];
+  s = "";
+  for (final x in a) {
+    s += x.toString();
+  }
+
+  // forEach
+  a.forEach((x) {
+    s += x.toString();
+  });
 }
 
 ///// strings
@@ -200,4 +231,184 @@ void f9() {
   //c = 4; // error
   final u = Struct(1, 'string');
   u.a = 3; // final only forbids reassignment
+}
+
+///// function return multiple values
+
+void f10() {
+  (int, int) swap(int a, int b) {
+    return (b, a);
+  }
+
+  const a = 0, b = 1;
+  final (x, y) = swap(a, b);
+}
+
+///// interfaces
+
+abstract class Shape {
+  double area();
+}
+
+class Circle implements Shape {
+  double r;
+  Circle(this.r);
+  @override
+  double area() {
+    return 3.14 * r * r;
+  }
+}
+
+void f11() {
+  Shape s;
+  s = Circle(3);
+  var area = s.area();
+}
+
+///// type conversion/assertions
+
+class TypeToTest {
+  int i;
+  TypeToTest(this.i);
+}
+
+void f12() {
+  // simple number conversion
+  var i = 0;
+  double d = i.toDouble();
+
+  // type assertions
+  Object s;
+  s = TypeToTest(0);
+  TypeToTest u;
+  //u = s; // error - different types; need assertion
+  if (s is TypeToTest) {
+    // in this scope, s is now implicitly of type TypeToTest
+    var x = s.i;
+  }
+}
+
+///// string conversion
+
+void f13() {
+  var i = 3;
+  var f = 3.14;
+  var b = true;
+  var d = DateTime(2024);
+  // all simple types and most library types have "toString"
+  var s1 = i.toString();
+  var s2 = f.toString();
+  var s3 = b.toString();
+  var s4 = d.toString();
+}
+
+///// error handling
+
+void f14() {
+  // basic error handling: try-catch
+  var s = "3.14";
+  try {
+    print(double.parse(s));
+  } on FormatException catch (e) {
+    // specific exception
+    print("error: $e");
+  } on Exception catch (e) {
+    // some other exception
+    print("error: $e");
+    rethrow; // optional: needs to be handled by caller
+  } catch (e, s) {
+    // something else
+    print("error: $e");
+    print("stack: $s");
+  } finally {
+    // some cleanup after any error case
+  }
+
+  // throwing errors
+  double f(double d) {
+    if (d < 0) {
+      return 1 / (-d);
+    } else if (d > 0) {
+      return 1 / d;
+    }
+    throw ArgumentError('invalid value');
+  }
+}
+
+// user defined errors: implement Exception interface
+
+class UserError implements Exception {
+  final String message;
+  const UserError(int id, String t) : message = '$id : $t';
+  @override
+  String toString() {
+    return message;
+  }
+}
+
+int throws() {
+  throw UserError(123, "error");
+}
+
+///// generics
+
+// generic fuction
+
+List<V> map<T, V>(List<T> inp, V Function(T) f) {
+  List<V> r = [];
+  for (final x in inp) {
+    r.add(f(x));
+  }
+  return r;
+}
+
+void f15() {
+  var a = <int>[1, 2, 3];
+  var b = map(a, (i) => i.toDouble() / 2.0);
+}
+
+// generic types
+
+class MyList<T> {
+  final List<T> _l = [];
+  void append(T x) {
+    _l.add(x);
+  }
+
+  T at(int i) {
+    if (0 <= i && i <= _l.length) {
+      return _l[i];
+    }
+    throw IndexError.withLength(i, _l.length);
+  }
+}
+
+///// json
+
+void f16() {}
+
+///// enum
+
+void f17() {}
+
+/////
+
+void f() {}
+
+///// SPECIAL STUFF
+
+// optional positional parameters
+
+void s1() {
+  int sum(int a, int? b) {
+    return a + (b ?? 0);
+  }
+
+  var i = sum(1, 2);
+  //i = sum(1); // error: b can be null but must be provided
+  int sum2(int a, [int? b]) {
+    return a + (b ?? 0);
+  }
+
+  i = sum2(1);
 }

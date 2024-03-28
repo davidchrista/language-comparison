@@ -83,6 +83,52 @@ function f5() {
     default:
       y = 0;
   }
+
+  // empty switch as alternative to if-else chain
+  x = 3;
+  switch (true) {
+    case x > 5:
+      y = x - 2;
+      break;
+    case x > 2:
+      y = x;
+      break;
+    default:
+      y = x + 2;
+      break;
+  }
+}
+
+///// loops
+
+function f5_0_5() {
+  // basic loop
+  var s = "";
+  for (var i = 0; i < 10; i++) {
+    s += "a";
+  }
+  var j = 0;
+  while (j++ < 10) {
+    s += "b";
+  }
+  while (true) {
+    break;
+  }
+
+  // "for in"
+  var a = [1, 2, 3, 4, 5];
+  s = "";
+  for (const x of a) {
+    // ATTENTION: "of"
+    s += x.toString();
+  }
+
+  // there's also for <field> in <object_fields>
+
+  // forEach
+  a.forEach((x) => {
+    s += x.toString();
+  });
 }
 
 ///// strings
@@ -159,7 +205,7 @@ function apply(x: number, h: (a: number) => number) {
 function f8() {
   let double = (a: number) => {
     return 2 * a;
-  }
+  };
   // or short
   double = (a: number) => 2 * a;
   var x = apply(3, double);
@@ -181,10 +227,171 @@ function f9() {
 
   const x = 5;
   const y = a;
-  const s = 'string';
+  const s = "string";
   //x = 6; // error
 
-  const c = {a: 2, s: 'string'};
+  const c = { a: 2, s: "string" };
   c.a = 3;
   // JS/TS const, like Dart final, only forbids reassignment
 }
+
+///// function return multiple values
+
+function f10() {
+  function swap(a: number, b: number): [number, number] {
+    return [b, a];
+  }
+  const a = 0,
+    b = 1;
+  const [x, y] = swap(a, b);
+}
+
+///// interfaces
+
+interface Shape {
+  area(): number;
+}
+
+class Circle implements Shape {
+  constructor(public r: number) {}
+  area(): number {
+    return 3.14 * this.r * this.r;
+  }
+}
+
+function f11() {
+  let s: Shape;
+  s = new Circle(3);
+  const area = s.area();
+}
+
+///// type conversion/assertions
+
+class TypeToTest {
+  constructor(public i: number) {}
+}
+
+function f12() {
+  // simple number conversion not necessary (only number type)
+
+  // type assertions
+  let s: any;
+  s = new TypeToTest(0);
+  let v: TypeToTest;
+  v = s; // no error in TS, but ugly/insecure
+  let u: TypeToTest;
+  u = s as TypeToTest;
+  if (u !== undefined) {
+    const x = u.i;
+  }
+
+  // sometimes we have to go the detour over "unknown":
+  //const x = "hello" as number; // error
+  const x = "hello" as unknown as number;
+  // but we have to be careful with that!
+}
+
+///// string conversion
+
+function f13() {
+  const i = 3;
+  const f = 3.14;
+  const b = true;
+  const d = new Date(2024);
+  // all simple types and most library types have "toString"
+  const s1 = i.toString();
+  const s2 = f.toString();
+  const s3 = b.toString();
+  const s4 = d.toString();
+}
+
+///// error handling
+
+function f14() {
+  // basic error handling: try-catch
+  const s = '{"a":123,"b":true,"c":"string"}';
+  try {
+    console.log(JSON.parse(s).c);
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      console.log(`error: ${e}`);
+    } else if (e instanceof Error) {
+      // some other exception
+      console.log(`error: ${e}`);
+      throw e; // rethrow
+    } else {
+      // something else
+      console.log(`error: ${e}`);
+    }
+  } finally {
+    // some cleanup after any error case
+  }
+
+  // throwing errors
+  const f = (d: number): number => {
+    if (d < 0) {
+      return 1 / -d;
+    } else if (d > 0) {
+      return 1 / d;
+    }
+    throw Error("invalid value");
+  };
+}
+
+// user defined errors: im
+
+class UserError extends Error {
+  constructor(id: number, text: string) {
+    super(`${id} : ${text}`);
+  }
+}
+
+function throws(): number {
+  throw new UserError(123, "error");
+}
+
+///// generics
+
+// generic fuction
+
+function map<T, V>(inp: Array<T>, f: (x: T) => V): Array<V> {
+  const r: Array<V> = [];
+  for (const x of inp) {
+    r.push(f(x));
+  }
+  return r;
+}
+
+function f15() {
+  const a: number[] = [1, 2, 3];
+  const b = map(a, (i) => (i / 2.0).toString());
+}
+
+// generic types
+
+class MyList<T> {
+  private l: T[] = [];
+  public append(x: T) {
+    this.l.push(x);
+  }
+  public at(i: number): T {
+    if (0 <= i && i <= this.l.length) {
+      return this.l[i];
+    }
+    throw RangeError("out of range");
+  }
+}
+
+///// json
+
+function f16() {}
+
+///// enum
+
+function f17() {}
+
+/////
+
+function f() {}
+
+///// SPECIAL STUFF
