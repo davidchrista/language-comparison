@@ -384,7 +384,30 @@ class MyList<T> {
 
 ///// json
 
-function f16() {}
+type JsonStruct = {
+  id: number;
+  name: string;
+};
+
+type JsonStructComplex = {
+  id: number;
+  entries: JsonStruct[];
+};
+
+function f16() {
+  const j: JsonStructComplex = {
+    id: 1,
+    entries: [
+      { id: 1, name: "name" },
+      { id: 1, name: "name2" },
+    ],
+  };
+  console.log(j);
+  const jsonDataString = JSON.stringify(j);
+  console.log(jsonDataString);
+  const jj = JSON.parse(jsonDataString) as JsonStructComplex;
+  console.log(jj);
+}
 
 ///// enum
 

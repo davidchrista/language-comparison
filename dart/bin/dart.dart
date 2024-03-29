@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dart/dart.dart' as dart;
 
 void main(List<String> arguments) {
@@ -385,7 +387,38 @@ class MyList<T> {
 
 ///// json
 
-void f16() {}
+class JsonStruct {
+  int id;
+  String name;
+  JsonStruct(this.id, this.name);
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+  factory JsonStruct.fromJson(Map<String, dynamic> json) {
+    return JsonStruct(json['id'] as int, json['name'] as String);
+  }
+}
+
+class JsonComplexStruct {
+  int id;
+  List<JsonStruct> entries;
+  JsonComplexStruct(this.id, this.entries);
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'entries': entries.map((e) => e.toJson()).toList()};
+  factory JsonComplexStruct.fromJson(Map<String, dynamic> json) {
+    List<dynamic> entries = json['entries'];
+    List<JsonStruct> entryList =
+        entries.map((e) => JsonStruct.fromJson(e)).toList();
+    return JsonComplexStruct(json['id'] as int, entryList);
+  }
+}
+
+void f16() {
+  var j = JsonComplexStruct(1, [JsonStruct(1, 'name'), JsonStruct(2, 'name2')]);
+  print(j);
+  var jsonDataStr = json.encode(j);
+  print(jsonDataStr);
+  var jj = JsonComplexStruct.fromJson(json.decode(jsonDataStr));
+  print(jj);
+}
 
 ///// enum
 

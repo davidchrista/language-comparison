@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
@@ -365,8 +366,29 @@ func (l *List[T]) at(i int) (t T, e error) {
 
 ///// json
 
-func f16() {
+type JsonStruct struct {
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+}
 
+type JsonComplexStruct struct {
+	Id      int          `json:"id"`
+	Entries []JsonStruct `json:"entries"`
+}
+
+func f16() {
+	j := JsonComplexStruct{Id: 1, Entries: []JsonStruct{{Id: 1, Name: "name"}, {Id: 2, Name: "name2"}}}
+	fmt.Println(j)
+	jsonData, err := json.Marshal(j)
+	jsonDataStr := string(jsonData)
+	if err == nil {
+		fmt.Println(jsonDataStr)
+	}
+	var jj JsonComplexStruct
+	err = json.Unmarshal([]byte(jsonDataStr), &jj)
+	if err == nil {
+		fmt.Println(jj)
+	}
 }
 
 ///// enum
