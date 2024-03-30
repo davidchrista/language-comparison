@@ -411,10 +411,29 @@ function f16() {
 
 ///// enum
 
-function f17() {}
+// we can choose between enum and union type
 
-/////
+enum Enum {
+  Red = 0,
+  Blue,
+  Green,
+}
 
-function f() {}
+type Union = "Red" | "Blue" | "Green";
+
+function f17() {
+  let d: Union;
+  const c: Union = "Blue";
+  console.log(c);
+  if (c != "Blue") {
+    console.log("something's wrong");
+  }
+  let f: Enum;
+  const e: Enum = Enum.Blue;
+  console.log(e);
+  if (e != Enum.Blue) {
+    console.log("something's wrong");
+  }
+}
 
 ///// SPECIAL STUFF

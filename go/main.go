@@ -393,14 +393,21 @@ func f16() {
 
 ///// enum
 
+type Color int
+
+const (
+  Red Color = iota // starts automatic numbering 0, 1, 2, ...
+  Green
+  Blue
+)
+
 func f17() {
-
-}
-
-/////
-
-func f() {
-
+  var d Color
+  c := Red
+  fmt.Println(c)
+  if c == Blue {
+    fmt.Println("something's wrong")
+  }
 }
 
 ///// SPECIAL STUFF

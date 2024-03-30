@@ -422,11 +422,16 @@ void f16() {
 
 ///// enum
 
-void f17() {}
+enum Color { Red, Green, Blue }
 
-/////
-
-void f() {}
+void f17() {
+  Color d;
+  var c = Color.Red;
+  print(c);
+  if (c == Color.Blue) {
+    print('something\'s wrong');
+  }
+}
 
 ///// SPECIAL STUFF
 
