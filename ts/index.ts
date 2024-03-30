@@ -196,6 +196,34 @@ function f7() {
   let p = s.generate();
 }
 
+///// inheritence
+
+class Animal {
+  constructor(private name: string) {}
+  speak(text: string) {
+    console.log(`${this.name} says. ${text}`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name: string, private bark: string) {
+    super(name);
+  }
+  jump() {
+    console.log("*dog jumps*");
+  }
+  greet() {
+    this.speak(this.bark);
+    this.jump();
+  }
+}
+
+function f7_5() {
+  const d = new Dog("Jack", "woof!");
+  d.greet();
+  d.speak("whrar!");
+}
+
 ///// function objects
 
 function apply(x: number, h: (a: number) => number) {
@@ -384,15 +412,15 @@ class MyList<T> {
 
 ///// json
 
-type JsonStruct = {
+interface JsonStruct {
   id: number;
   name: string;
-};
+}
 
-type JsonStructComplex = {
+interface JsonStructComplex {
   id: number;
   entries: JsonStruct[];
-};
+}
 
 function f16() {
   const j: JsonStructComplex = {
@@ -437,3 +465,21 @@ function f17() {
 }
 
 ///// SPECIAL STUFF
+
+// type defninitions vs interfaces
+
+// practically quite similar
+// * general rule:
+//   * interfaces for describing object structure
+//   * type definitions for aliases, comples types
+//     (unions, intersections), utility types or
+//     generic types
+// * interfaces can be extended, types cannot
+
+interface Interface {
+  a: number;
+  b: string;
+  f: (x: string) => number;
+}
+
+type Type = number | string;

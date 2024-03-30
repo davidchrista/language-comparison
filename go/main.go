@@ -185,6 +185,38 @@ func f7() {
 	p := s.generate() // testtesttest
 }
 
+///// inheritence
+
+// via embedded types
+
+type Animal struct {
+	name string
+}
+
+func (a *Animal) Speak(text string) {
+	fmt.Printf("%s says: %s", a.name, text)
+}
+
+type Dog struct {
+	Animal // embedded type
+	bark string;
+}
+
+func (d *Dog) Jump() {
+	fmt.Println("*dog jumps*")
+}
+
+func (d *Dog) Greet() {
+	d.Speak(d.bark) // from Animal
+	d.Jump()
+}
+
+func f7_5() {
+	d := Dog{Animal{"Jack"}, "woof!"}
+	d.Greet()
+	d.Speak("whrar!")
+}
+
 ///// function objects
 
 func apply(x int, h func(int) int) int {

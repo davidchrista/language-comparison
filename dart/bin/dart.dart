@@ -193,6 +193,34 @@ void f7() {
   var p = s.generate();
 }
 
+///// inheritence
+
+class Animal {
+  final String _name;
+  const Animal(this._name);
+  void speak(String text) {
+    print('$_name says: $text');
+  }
+}
+
+class Dog extends Animal {
+  final String _bark;
+  const Dog(String name, this._bark) : super(name);
+  void jump() {
+    print('*dog jumps*');
+  }
+  void greet() {
+    speak(_bark);
+    jump();
+  }
+}
+
+void f7_5() {
+  var d = Dog('Jack', 'woof!');
+  d.greet();
+  d.speak("whrar!");
+}
+
 ///// function objects
 
 int apply(int x, int Function(int) h) {
