@@ -464,9 +464,36 @@ function f17() {
   }
 }
 
+///// asynchronicity
+
+// need awaitable wrapper ...
+async function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function task1(): Promise<string> {
+  console.log("Task 1 started");
+  await delay(2000);
+  return "Task 1 completed";
+}
+
+async function task2(): Promise<string> {
+  console.log("Task 2 started");
+  await delay(1000);
+  return "Task 2 completed";
+}
+
+async function f18() {
+  const p = task1();
+  p.then((value) => console.log(value));
+  const q = task2();
+  q.then((value) => console.log(value));
+  await Promise.all([p, q]);
+}
+
 ///// SPECIAL STUFF
 
-// type defninitions vs interfaces
+// type definitions vs interfaces
 
 // practically quite similar
 // * general rule:

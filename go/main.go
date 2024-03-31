@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"sync"
+	"time"
 )
 
 func main() {
@@ -199,7 +201,7 @@ func (a *Animal) Speak(text string) {
 
 type Dog struct {
 	Animal // embedded type
-	bark string;
+	bark   string
 }
 
 func (d *Dog) Jump() {
@@ -428,18 +430,56 @@ func f16() {
 type Color int
 
 const (
-  Red Color = iota // starts automatic numbering 0, 1, 2, ...
-  Green
-  Blue
+	Red Color = iota // starts automatic numbering 0, 1, 2, ...
+	Green
+	Blue
 )
 
 func f17() {
-  var d Color
-  c := Red
-  fmt.Println(c)
-  if c == Blue {
-    fmt.Println("something's wrong")
-  }
+	var d Color
+	c := Red
+	fmt.Println(c)
+	if c == Blue {
+		fmt.Println("something's wrong")
+	}
+}
+
+///// asynchronicity
+
+func task1() chan string {
+	c := make(chan string)
+	go func() {
+		fmt.Println("Task 1 started")
+		time.Sleep(2 * time.Second)
+		c <- "Task 1 completed"
+	}()
+	return c
+}
+
+func task2() chan string {
+	c := make(chan string)
+	go func() {
+		fmt.Println("Task 2 started")
+		time.Sleep(1 * time.Second)
+		c <- "Task 2 completed"
+	}()
+	return c
+}
+
+func f18() {
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		p := task1()
+		fmt.Println(<-p)
+	}()
+	go func() {
+		defer wg.Done()
+		p := task2()
+		fmt.Println(<-p)
+	}()
+	wg.Wait()
 }
 
 ///// SPECIAL STUFF

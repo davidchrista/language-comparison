@@ -276,7 +276,7 @@ void f10() {
 
 ///// interfaces
 
-abstract class Shape {
+abstract interface class Shape {
   double area();
 }
 
@@ -459,6 +459,30 @@ void f17() {
   if (c == Color.Blue) {
     print('something\'s wrong');
   }
+}
+
+///// asynchronicity
+
+// this is exactly the same as with JavaScript ...
+
+Future<String> task1() async {
+  print("Task 1 started");
+  await Future.delayed(Duration(seconds: 2));
+  return 'Task 1 completed';
+}
+
+Future<String> task2() async {
+  print("Task 2 started");
+  await Future.delayed(Duration(seconds: 1));
+  return 'Task 2 completed';
+}
+
+void f18() {
+  var p = task1();
+  p.then((value) => print(value));
+  var q = task2();
+  q.then((value) => print(value));
+  Future.wait([p, q]);
 }
 
 ///// SPECIAL STUFF
