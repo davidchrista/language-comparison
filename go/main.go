@@ -40,16 +40,34 @@ func f1() {
 
 ///// lists
 
+// (slices as references to some underlying array)
+
 func f2() {
 	a := []int{1, 2, 3}
 	b := []string{}
+	c := make([]int, 20)
+
+	// slice literal
+	b = []string{"bla", "ble"}
 }
 
 ///// maps
 
 func f3() {
 	m := map[int]string{1: "1", 2: "2"}
+	// initial capacity: 2
+	m[1] = "4"
+	m[5] = "8" // resize
+
 	n := map[int]string{}
+	// initial capacity: 0
+	n[1] = "a" // resize
+	n[2] = "b" // resize ...
+
+	o := make(map[int]string, 10)
+	// initial capacity: 10
+	// use make if a reasonable initial capacity is available
+	o[0] = "a" // no resize until 11th elem
 }
 
 ///// if
@@ -484,7 +502,7 @@ func f18() {
 
 ///// SPECIAL STUFF
 
-// defer
+/// defer
 
 func s1() {
 	cleanup1 := func() {}
@@ -498,7 +516,7 @@ func s1() {
 	// at the end the deferred functions get called (LIFO: 2 -> 1)
 }
 
-// method call on nil value is possible, if implemented
+/// method call on nil value is possible, if implemented
 
 type Stru struct {
 	i int
@@ -518,3 +536,18 @@ func s2() {
 	s = Stru{3}
 	s.print()
 }
+
+/// pointers
+
+func s3() {
+		i := 0
+		pi := &i
+		fmt.Println(pi, *pi)
+
+		s := Stru{0}
+		ps := &s
+		fmt.Println(ps, *ps)
+		// there is no pointer-struct deref like C's ->
+		// the following are possibilities are the same
+		fmt.Println(ps.i, (*ps).i)
+	}

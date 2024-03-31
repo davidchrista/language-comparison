@@ -31,14 +31,31 @@ function f1() {
 
 function f2() {
   const a = [1, 2, 3];
-  const b: string[] = [];
+  let b: string[] = [];
+  const c: Array<string> = [];
+
+  // list literal
+  b = ["bla", "ble"]
+
+  a[0] = 0;
+
+  c.push("3");
 }
 
 ///// maps
 
 function f3() {
-  const m = { 1: "1", 2: "2" };
-  const n: { [key: number]: string } = {};
+  const m = { 1: "1", 2: "2" }; // no map, just an object
+
+  const n: { [key: number]: string } = {1: "a"};// "map"
+  n[5] = "b";
+
+  // capacity is not considered
+
+  const o = new Map<number, string>(); // Map type
+  //o[3] = "4"; // error - not available
+  o.set(3, "c");
+  const a = o.get(3);
 }
 
 ///// if
@@ -493,7 +510,7 @@ async function f18() {
 
 ///// SPECIAL STUFF
 
-// type definitions vs interfaces
+/// type definitions vs interfaces
 
 // practically quite similar
 // * general rule:

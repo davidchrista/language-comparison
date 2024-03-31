@@ -46,15 +46,30 @@ void f1() {
 ///// lists
 
 void f2() {
-  var a = [1, 2, 3];
+  final a = [1, 2, 3];
   var b = <String>[];
+  List<String> c = [];
+
+  // list literal
+  b = ["bla", "ble"];
+
+  a[0] = 0;
+
+  c.add("3");
 }
 
 ///// maps
 
 void f3() {
-  var m = {1: '1', 2: '2'};
-  Map<int, String> n;
+  var m = {1: '1', 2: '2'}; // map
+  m[1] = 'b';
+  m[5] = 'c';
+
+  Map<int, String> n; // empty map
+
+  var o = Map<int, String>.fromEntries(m.entries); // copy entries
+
+  // capacity is not considered
 }
 
 ///// if
@@ -487,7 +502,7 @@ void f18() {
 
 ///// SPECIAL STUFF
 
-// optional positional parameters
+/// optional positional parameters
 
 void s1() {
   int sum(int a, int? b) {
